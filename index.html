@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>《尘埃落定》· 学术精校版 | 50道选择题 | 六篇文献深度题库 | 昵称+排行榜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(145deg, #1e1a14 0%, #0f0d09 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', '华文楷书', 'Microsoft YaHei', '宋体', 'PingFang SC', serif;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            background: #fef3df;
+            background-image: radial-gradient(circle at 25% 30%, rgba(190, 150, 90, 0.1) 2%, transparent 2.5%);
+            background-size: 45px 45px;
+            border-radius: 56px 40px 64px 40px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 245, 215, 0.9);
+            overflow: hidden;
+            border: 1px solid #e7c88c;
+        }
+        .scene-image {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            transition: background-image 0.4s ease;
+            border-bottom: 3px solid #dabb7a;
+        }
+        .game-header {
+            background: linear-gradient(135deg, #5c3a24, #3e2718);
+            padding: 10px 24px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.8rem;
+            letter-spacing: 5px;
+            color: #ffefb9;
+            text-shadow: 3px 3px 0 #2c1a0c;
+        }
+        .sub {
+            color: #e9c891;
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background: #2f271cd9;
+            backdrop-filter: blur(2px);
+            padding: 8px 24px;
+            color: #fbefcf;
+            font-weight: bold;
+            border-bottom: 1px solid #c7a25b;
+        }
+        .lives span { font-size: 1.3rem; letter-spacing: 3px; color: #ff9f7c; }
+        .score span { background: #1f1a10; padding: 4px 12px; border-radius: 60px; font-family: monospace; color: #ffd966; }
+        .level-area {
+            background: #ebdfb6c9;
+            margin: 12px 18px 0;
+            border-radius: 60px;
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .level-name { font-weight: bold; font-size: 1.1rem; color: #4a2e1a; }
+        .level-desc { font-size: 0.7rem; color: #7a6233; }
+        .quiz-card {
+            margin: 16px 18px;
+            background: #fffcf0e6;
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 1px solid #ebd5a0;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.4;
+            font-weight: 600;
+            color: #2c2416;
+            margin-bottom: 12px;
+            border-left: 5px solid #c2a15b;
+            padding-left: 18px;
+        }
+        .ref-note {
+            font-size: 0.7rem;
+            color: #9b7e52;
+            margin-bottom: 15px;
+            padding-left: 23px;
+            font-style: italic;
+        }
+        .options-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0 15px;
+        }
+        .option {
+            background: #f7f0df;
+            border: 2px solid #e2cf9e;
+            border-radius: 50px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+        .option:hover { background: #efe0c1; border-color: #c2a15b; transform: translateX(4px); }
+        .option.selected { background: #d9cfaa; border-color: #b57c2c; box-shadow: 0 0 0 2px #ffdfaa; }
+        .option-prefix { font-weight: bold; background: #cbbd8c; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 30px; color: #2d2412; }
+        .button-group { display: flex; gap: 14px; margin-top: 18px; }
+        button {
+            flex: 1;
+            background: #7d6139;
+            border: none;
+            padding: 10px 0;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #fff1da;
+            cursor: pointer;
+            transition: 0.1s;
+            font-family: inherit;
+        }
+        button:hover { background: #9b784a; transform: scale(0.97); }
+        .btn-exit { background: #5a3e2c; }
+        .feedback {
+            margin-top: 16px;
+            padding: 10px 16px;
+            border-radius: 28px;
+            background: #ebddb2;
+            font-size: 0.85rem;
+            border-left: 6px solid #b48b48;
+        }
+        .feedback.correct { background: #d9e6c3; border-left-color: #5f8b3e; color: #2f4d2d; }
+        .feedback.wrong { background: #f3ded5; border-left-color: #b34e3a; color: #802c1c; }
+        .next-hint { text-align: center; margin: 8px 18px 20px; font-size: 0.7rem; color: #b4915b; }
+        .ending-panel, .nickname-panel {
+            margin: 20px;
+            background: #e9dcb4;
+            border-radius: 40px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: inset 0 0 0 2px #fff3da, 0 5px 12px black;
+        }
+        .nickname-input {
+            width: 80%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 50px;
+            border: 2px solid #c2a15b;
+            font-size: 1rem;
+            text-align: center;
+            background: #fffef0;
+        }
+        .rank-list {
+            text-align: left;
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 15px 0;
+            background: #faf1dc;
+            border-radius: 28px;
+            padding: 10px;
+        }
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddceaa;
+            font-size: 0.9rem;
+        }
+        .rank-number { font-weight: bold; color: #8b6946; width: 40px; }
+        .rank-name { flex: 2; }
+        .rank-score { font-weight: bold; color: #b47c44; }
+        .restart-btn { background: #5e452b; margin-top: 12px; display: inline-block; width: auto; padding: 8px 24px; }
+        .sound-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            margin: 4px 18px 0;
+        }
+        .sound-btn {
+            background: #ab8a54;
+            border: none;
+            font-size: 0.65rem;
+            padding: 3px 12px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            width: auto;
+        }
+        footer { font-size: 0.6rem; text-align: center; padding: 10px; color: #846e48; background: #e6d8b5; }
+        @media (max-width: 550px) {
+            .question-text { font-size: 1rem; }
+            .option { padding: 7px 12px; font-size: 0.8rem; }
+            .ref-note { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container" id="gameRoot">
+    <div class="scene-image" id="sceneImage"></div>
+    <div class="game-header">
+        <h1>尘埃落定</h1>
+        <div class="sub">学术精校版 · 50道选择题 | 六篇核心文献深度题库</div>
+    </div>
+    <div class="stats">
+        <div class="lives">❤️ 生命: <span id="livesValue">6</span></div>
+        <div class="score">📜 积分: <span id="scoreValue">0</span></div>
+    </div>
+    <div class="sound-bar">
+        <button id="bgmToggleBtn" class="sound-btn">🎵 背景乐</button>
+        <button id="sfxToggleBtn" class="sound-btn">🔊 音效</button>
+    </div>
+    <div id="dynamicContent"></div>
+    <footer>🎋 50道选择题 · 含10道学术文献深度题 · 答对+10分 · 见证尘埃落定</footer>
+</div>
+
+<script>
+    // ----------------------------- 50道选择题 含六篇文献新增10题 -----------------------------
+    // 参考文献标注格式: [李建2008]、[吴道毅2006]、[徐新建1999]、[周政保1998]、[贺绍俊1998]、[廖全京1998]
+    const BASE_QUIZ = [
+        // 第一关 基础情节 (10题)
+        { q: "《尘埃落定》故事发生的主要地域是？", options: ["青藏高原", "内蒙古草原", "云南边陲", "新疆戈壁"], correct: 0, ref: "" },
+        { q: "小说开篇时，麦其土司辖区赖以生存的主要作物是？", options: ["青稞", "麦子", "罂粟", "玉米"], correct: 1, ref: "" },
+        { q: "故事开篇，土司制度处于怎样的时代状态？", options: ["鼎盛繁荣期", "封建土司割据的旧时代末期", "已完全消亡", "被现代政权接管"], correct: 1, ref: "" },
+        { q: "傻子少爷的哥哥通常被称呼为？", options: ["大少爷", "二少爷", "麦其公子", "土司继承人"], correct: 0, ref: "" },
+        { q: "麦其土司的官寨位于现在的哪个地区？", options: ["拉萨", "马尔康", "日喀则", "玉树"], correct: 1, ref: "" },
+        { q: "小说整体的结局走向是？", options: ["土司制度复兴", "土司制度彻底消亡", "傻子成为土司", "汉族接管后保留土司"], correct: 1, ref: "" },
+        { q: "傻子少爷的母亲是什么民族？", options: ["藏族", "汉族", "回族", "蒙古族"], correct: 1, ref: "" },
+        { q: "土司权力继承遵循的主要原则是？", options: ["长子继承制", "幼子继承制", "选举制", "能者居之"], correct: 0, ref: "" },
+        { q: "改变整个土司领地格局的关键植物是？", options: ["麦子", "罂粟", "青稞", "茶叶"], correct: 1, ref: "" },
+        { q: "罂粟种子最初是由谁带到麦其土司领地的？", options: ["黄特派员", "红色汉人", "英国商人", "汪波土司"], correct: 0, ref: "" },
+        // 第二关 (10题)
+        { q: "麦其土司引入罂粟后带来的最大影响是？", options: ["各土司和平共处", "引发各土司跟风种植、贫富剧变", "百姓普遍富裕", "土司制度强化"], correct: 1, ref: "" },
+        { q: "傻子少爷在罂粟热潮中做出了什么关键决策？", options: ["大量种植罂粟", "改种麦子", "烧毁所有种子", "向汉人求援"], correct: 1, ref: "" },
+        { q: "因为改种麦子，傻子少爷领地躲过了什么灾难？", options: ["瘟疫", "饥荒", "战乱", "洪水"], correct: 1, ref: "" },
+        { q: "边境贸易市场建立在什么地方？", options: ["南方峡谷", "北方边界", "官寨内部", "拉萨城中"], correct: 1, ref: "" },
+        { q: "建立边境贸易市场的主要决策者是谁？", options: ["麦其土司", "傻子二少爷", "大少爷", "黄特派员"], correct: 1, ref: "" },
+        { q: "麦其土司最大的仇敌是哪个土司？", options: ["茸贡土司", "汪波土司", "查查土司", "拉雪巴土司"], correct: 1, ref: "" },
+        { q: "茸贡土司的女儿叫什么名字？", options: ["卓玛", "塔娜", "央金", "拉姆"], correct: 1, ref: "" },
+        { q: "麦其土司的太太（傻子母亲）最终命运是？", options: ["病逝", "被仇家杀害", "服毒自杀", "回到汉地"], correct: 2, ref: "" },
+        { q: "傻子少爷的哥哥最终被谁杀死？", options: ["傻子少爷", "红色汉人", "仇家（麦其家仇人）", "麦其土司"], correct: 2, ref: "" },
+        { q: "黄特派员除了罂粟种子，还带来了什么？", options: ["圣经", "枪炮武器", "茶叶", "丝绸"], correct: 1, ref: "" },
+        // 第三关 (10题)
+        { q: "小说中“傻子”是否真的愚钝？", options: ["是，天生痴傻", "不是，他看透权力荒诞", "时好时坏", "装傻自保"], correct: 1, ref: "" },
+        { q: "麦其土司的核心人物特质是？", options: ["仁爱宽容", "专制贪婪强权", "优柔寡断", "崇尚科学"], correct: 1, ref: "" },
+        { q: "傻子少爷的“先知感”主要体现？", options: ["预判自己死亡", "预判饥荒、战争、土司灭亡", "预知天气", "预知罂粟价格"], correct: 1, ref: "" },
+        { q: "茸贡土司之女塔娜象征什么？", options: ["纯洁爱情", "欲望与世俗诱惑", "忠诚", "复仇"], correct: 1, ref: "" },
+        { q: "作者通过傻子超脱表达的核心思想是？", options: ["聪明人必定成功", "世俗聪明是愚昧，纯粹笨拙是清醒", "傻子天生幸运", "权力至上"], correct: 1, ref: "" },
+        { q: "傻子少爷最后被谁杀死？", options: ["麦其土司", "红色汉人", "仇家（麦其仇人后代）", "哥哥旧部"], correct: 2, ref: "" },
+        { q: "小说中傻子少爷最信任的下人是？", options: ["管家", "小尔依（行刑人）", "厨娘", "马夫"], correct: 1, ref: "" },
+        { q: "小说标题《尘埃落定》的深层含义？", options: ["天气转晴", "土司封建制度彻底覆灭", "傻子清醒", "战争结束"], correct: 1, ref: "" },
+        { q: "土司制度最终消亡的根本原因是？", options: ["外族入侵", "土司内乱", "落后于现代历史进程", "瘟疫肆虐"], correct: 2, ref: "" },
+        { q: "《尘埃落定》获得的重要文学奖项是？", options: ["鲁迅文学奖", "茅盾文学奖", "老舍文学奖", "曹禺戏剧奖"], correct: 1, ref: "" },
+        // 第四关 (10题)
+        { q: "小说中“麦子”主要象征什么？", options: ["权力", "安稳与生存", "财富", "现代文明"], correct: 1, ref: "" },
+        { q: "“罂粟”在小说中象征什么？", options: ["生命", "欲望贪婪与毁灭", "救赎", "外来文化"], correct: 1, ref: "" },
+        { q: "红色汉人（解放军）到来后土司制度的结局？", options: ["保留", "彻底废除", "改为自治", "并入宗教"], correct: 1, ref: "" },
+        { q: "《尘埃落定》主要展现了哪个民族的文化？", options: ["蒙古族", "满族", "藏族（嘉绒藏族）", "彝族"], correct: 2, ref: "" },
+        { q: "傻子视角叙事的主要文学优势是？", options: ["增加喜剧感", "以天真视角解构权力荒诞", "方便叙述战争", "突出爱情线"], correct: 1, ref: "" },
+        { q: "翁波意西最终被麦其土司割去舌头的根本原因是？", options: ["偷盗", "传播新教并质疑土司权力", "叛变", "诅咒土司"], correct: 1, ref: "[贺绍俊1998]" },
+        { q: "小说中“骨头”（辖日）观念的功能是？", options: ["划分职业", "区分社会等级与权力", "宗教修行", "军事编制"], correct: 1, ref: "[徐新建1999]" },
+        { q: "周政保认为《尘埃落定》的叙述方式本质上是？", options: ["现实主义", "意象化叙述方式", "自然主义", "意识流"], correct: 1, ref: "[周政保1998]" },
+        { q: "廖全京将《尘埃落定》比喻为哪两面镜子的合一？", options: ["魔镜与法镜", "存在之镜与幻想之镜", "历史之镜与未来之镜", "东方与西方之镜"], correct: 1, ref: "[廖全京1998]" },
+        { q: "吴道毅认为小说中权力与欲望的关系揭示了什么？", options: ["权力抑制欲望", "历史是肉身的历史、欲望的历史", "欲望与权力无关", "权力消灭欲望"], correct: 1, ref: "[吴道毅2006]" }
+    ];
+
+    // **** 新增10道学术文献深度题目 (严格依据六篇论文) ****
+    const ACADEMIC_QUESTIONS = [
+        { q: "李建认为《尘埃落定》中的神秘主义叙事主要来源于哪种文化根基？", options: ["拉美魔幻现实主义", "藏族苯教文化中的巫术、灵魂与征兆观念", "西方现代主义文学", "汉藏民间故事"], correct: 1, ref: "[李建2008]" },
+        { q: "根据李建的研究，傻子少爷穿上的具有复仇魔力的“紫衣”体现了苯教哪种观念？", options: ["驱霍巫术", "诅咒巫术", "寄魂观念（灵魂外寄）", "占卜术"], correct: 2, ref: "[李建2008]" },
+        { q: "徐新建指出，《尘埃落定》中“土司”一词是外来语，对应的本土王者称谓是什么？", options: ["赞普", "洪布/嘉尔波", "第悉", "囊索"], correct: 1, ref: "[徐新建1999]" },
+        { q: "贺绍俊认为阿来创作《尘埃落定》主要运用了哪种思维方式？", options: ["理性逻辑思维", "悟性的思维与神游结构", "先验批判思维", "解构主义"], correct: 1, ref: "[贺绍俊1998]" },
+        { q: "周政保在评论中指出，《尘埃落定》的叙述视角具备哪种特殊效果？", options: ["史诗宏大", "以天真视角解构权力荒诞", "民间诙谐", "悲剧崇高"], correct: 1, ref: "[周政保1998]" },
+        { q: "吴道毅分析认为，小说中土司太太告诫儿子“家奴是牲口”体现了权力结构中的什么现象？", options: ["经济剥削", "等级制与人的物化", "宗教压迫", "文化同化"], correct: 1, ref: "[吴道毅2006]" },
+        { q: "廖全京将傻子与翁波意西的视线交叉称为？", options: ["双主角模式", "智者视线与愚者视线的交叉", "第三人称有限视角", "复调叙事"], correct: 1, ref: "[廖全京1998]" },
+        { q: "根据李建论文，苯教驱霍巫术在小说中体现为哪个情节？", options: ["罂粟花战争中的冰雹咒术对决", "傻子预言饥荒", "紫衣复仇", "塔娜背叛"], correct: 0, ref: "[李建2008]" },
+        { q: "徐新建认为《尘埃落定》属于哪种文学类型？", options: ["纯藏族文学", "跨族别写作", "双族别文学（双族性文学）", "汉语中心文学"], correct: 2, ref: "[徐新建1999]" },
+        { q: "贺绍俊指出，小说中“飞舞的鞭梢把好多苹果花都碰掉了”这一意象体现了作者怎样的创作状态？", options: ["理性思辨", "妙悟与自由神游", "政治隐喻", "自然写实"], correct: 1, ref: "[贺绍俊1998]" }
+    ];
+
+    // 合并题库：基础40题+学术10题=50题，分为5关，每关10题
+    let allQuestions = [...BASE_QUIZ, ...ACADEMIC_QUESTIONS];
+    // 随机打乱顺序但保证每关内题目随机
+    for (let i = allQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
+    }
+    // 分成5关，每关10题
+    const LEVELS_DATA = [];
+    for (let i = 0; i < 5; i++) {
+        LEVELS_DATA.push({
+            name: `第${i+1}关 · ${["尘埃初现","罂粟风云","权力迷宫","傻子哲思","尘埃落定"][i]}`,
+            desc: `${["土司末世基础","欲望与罂粟","土司争斗与人性的权力","傻子箴言与学术视角","主题意象与文学深度"][i]} · 10题`,
+            img: `https://picsum.photos/id/${[104,176,406,127,162][i]}/900/200`,
+            questions: allQuestions.slice(i*10, i*10+10)
+        });
+    }
+
+    // 排行榜存储
+    let playerNickname = "";
+    let finalScore = 0;
+    function loadRanking() {
+        const stored = localStorage.getItem("dust_ranking_academic");
+        if(stored) return JSON.parse(stored);
+        return [];
+    }
+    function saveRanking(ranking) { localStorage.setItem("dust_ranking_academic", JSON.stringify(ranking)); }
+    function addScoreToRanking(name, score) {
+        let ranking = loadRanking();
+        ranking.push({ name, score, date: new Date().toLocaleString() });
+        ranking.sort((a,b) => b.score - a.score);
+        if(ranking.length > 10) ranking = ranking.slice(0,10);
+        saveRanking(ranking);
+        return ranking;
+    }
+    function getRankingHtml() {
+        const ranking = loadRanking();
+        if(ranking.length===0) return "<div style='padding:12px;text-align:center'>暂无排名，成为尘埃见证者</div>";
+        return ranking.map((item,idx)=>`<div class="rank-item"><span class="rank-number">${idx+1}</span><span class="rank-name">${escapeHtml(item.name)}</span><span class="rank-score">${item.score}分</span></div>`).join('');
+    }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // 音效系统
+    let bgmEnabled=true, sfxEnabled=true;
+    let bgmAudio=null;
+    function initAudio() {
+        bgmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
+        bgmAudio.loop=true; bgmAudio.volume=0.2;
+        if(bgmEnabled) bgmAudio.play().catch(e=>console.log);
+        window.correctSound = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
+        window.wrongSound = new Audio('https://www.soundjay.com/misc/sounds/failure-drum-01.mp3');
+        if(window.correctSound) window.correctSound.volume=0.4;
+        if(window.wrongSound) window.wrongSound.volume=0.4;
+    }
+    function playCorrect() { if(sfxEnabled && window.correctSound) { window.correctSound.currentTime=0; window.correctSound.play().catch(e=>{}); } }
+    function playWrong() { if(sfxEnabled && window.wrongSound) { window.wrongSound.currentTime=0; window.wrongSound.play().catch(e=>{}); } }
+    function toggleBgm() { bgmEnabled = !bgmEnabled; if(bgmAudio) { if(bgmEnabled) bgmAudio.play().catch(e=>{}); else bgmAudio.pause(); } }
+    function toggleSfx() { sfxEnabled = !sfxEnabled; }
+    function updateSceneImage(levelIdx) { document.getElementById('sceneImage').style.backgroundImage = `url(${LEVELS_DATA[levelIdx].img})`; }
+
+    // 游戏状态
+    let currentLevelIdx=0, currentQIndex=0, lives=6, score=0, gameActive=true, gameFinished=false;
+    let currentQuestions=[], selectedOptionIdx=null;
+    let currentPlayerName="";
+    const dynamicDiv = document.getElementById("dynamicContent");
+    const livesSpan = document.getElementById("livesValue");
+    const scoreSpan = document.getElementById("scoreValue");
+    function updateUI() { livesSpan.innerText = lives; scoreSpan.innerText = score; }
+
+    function handleLevelComplete() {
+        if(currentLevelIdx+1 < LEVELS_DATA.length) { lives = Math.min(lives+1, 7); updateUI(); }
+        const feed = document.getElementById("feedbackMsg");
+        if(feed) { feed.innerHTML = `🎉 通关【${LEVELS_DATA[currentLevelIdx].name}】！ +1生命奖励 🎉`; feed.className = "feedback correct"; }
+        currentLevelIdx++;
+        if(currentLevelIdx >= LEVELS_DATA.length) {
+            gameActive=false; gameFinished=true;
+            finalScore = score;
+            if(currentPlayerName) addScoreToRanking(currentPlayerName, finalScore);
+            renderFinalWin();
+            return;
+        }
+        initLevel(currentLevelIdx);
+        renderCurrentQuestion();
+        updateSceneImage(currentLevelIdx);
+    }
+    function initLevel(idx) { currentQuestions = [...LEVELS_DATA[idx].questions]; currentQIndex=0; selectedOptionIdx=null; }
+    function onSubmit() {
+        if(!gameActive || gameFinished) return;
+        if(selectedOptionIdx === null) { showFeedback("⚠️ 请先选择一个答案！", false); return; }
+        const q = currentQuestions[currentQIndex];
+        const isCorrect = (selectedOptionIdx === q.correct);
+        if(isCorrect) {
+            score+=10; updateUI(); playCorrect();
+            let refHtml = q.ref ? `<br><span style="font-size:0.7rem;">📚 参考文献：${q.ref}</span>` : "";
+            showFeedback(`✅ 正确！ +10分<br>「${q.options[q.correct]}」${refHtml}`, true);
+            if(currentQIndex+1 < currentQuestions.length) { currentQIndex++; selectedOptionIdx=null; renderCurrentQuestion(); }
+            else { handleLevelComplete(); }
+        } else {
+            lives--; updateUI(); playWrong();
+            let refHtml = q.ref ? `<br><span style="font-size:0.7rem;">📚 参考文献：${q.ref}</span>` : "";
+            showFeedback(`❌ 错误！ 正确答案：${q.options[q.correct]}${refHtml}<br>你选了：${q.options[selectedOptionIdx]}`, false);
+            if(lives <= 0) { gameActive=false; gameFinished=true; finalScore=score; if(currentPlayerName) addScoreToRanking(currentPlayerName, finalScore); renderGameOver(); }
+            else { selectedOptionIdx=null; renderCurrentQuestion(); }
+        }
+    }
+    function showFeedback(msg, isCorrect) {
+        const feed = document.getElementById("feedbackMsg");
+        if(feed) { feed.innerHTML = msg; feed.className = isCorrect ? "feedback correct" : "feedback wrong"; feed.scrollIntoView({ behavior:"smooth", block:"nearest" }); }
+    }
+    function renderCurrentQuestion() {
+        if(!gameActive || gameFinished) return;
+        const level = LEVELS_DATA[currentLevelIdx];
+        const q = currentQuestions[currentQIndex];
+        const progress = `${currentQIndex+1}/${currentQuestions.length}`;
+        const refLine = q.ref ? `<div class="ref-note">📖 学术依据：${q.ref}</div>` : `<div class="ref-note">📖 原著客观题</div>`;
+        const optionsHtml = q.options.map((opt, idx) => `<div class="option ${selectedOptionIdx === idx ? 'selected' : ''}" data-opt-index="${idx}"><span class="option-prefix">${String.fromCharCode(65+idx)}</span><span>${opt}</span></div>`).join('');
+        dynamicDiv.innerHTML = `
+            <div class="level-area"><span class="level-name">${level.name}</span><span class="level-desc">${level.desc}</span></div>
+            <div class="quiz-card"><div class="question-text">📜 ${q.q}</div>${refLine}<div class="options-area" id="optionsContainer">${optionsHtml}</div>
+            <div class="button-group"><button id="submitBtn">✍️ 尘埃落定 · 提交答案</button><button id="exitBtn" class="btn-exit">🏮 退出游戏</button></div>
+            <div id="feedbackMsg" class="feedback">✨ 学术选择题，点击选项后提交 ✨</div></div>
+            <div class="next-hint">⚡ 本关进度: ${progress}  |  每题10分，答错扣1命 | 当前生命: ${lives}</div>`;
+        document.querySelectorAll('.option').forEach(opt => opt.addEventListener('click', (e) => {
+            const idx = parseInt(opt.getAttribute('data-opt-index'));
+            selectedOptionIdx = idx;
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+        }));
+        document.getElementById("submitBtn")?.addEventListener("click", onSubmit);
+        document.getElementById("exitBtn")?.addEventListener("click", exitGameEarly);
+    }
+    function exitGameEarly() {
+        if(gameFinished) return;
+        gameActive=false; gameFinished=true;
+        if(currentPlayerName && score>0) addScoreToRanking(currentPlayerName, score);
+        dynamicDiv.innerHTML = `<div class="ending-panel"><h2>🍂 尘埃未定 · 中途离去 🍂</h2><p>积分: ${score}</p><div class="rank-list"><h4>🏆 排行榜</h4>${getRankingHtml()}</div><button class="restart-btn" id="exitRestart">📖 重回土司官寨</button></div>`;
+        document.getElementById("exitRestart")?.addEventListener("click",()=>location.reload());
+    }
+    function renderGameOver() {
+        dynamicDiv.innerHTML = `<div class="ending-panel"><h2>🏚️ 尘埃落定 · 命途终结 🏚️</h2><p>最终得分: ${score} 分<br>止步于 ${LEVELS_DATA[currentLevelIdx]?.name}</p><div class="rank-list"><h4>🏆 排行榜</h4>${getRankingHtml()}</div><button class="restart-btn" id="restartBtn">🔄 重启闯关</button></div>`;
+        document.getElementById("restartBtn")?.addEventListener("click",()=>location.reload());
+    }
+    function renderFinalWin() {
+        const totalMax = LEVELS_DATA.reduce((s,l)=>s + l.questions.length*10,0);
+        dynamicDiv.innerHTML = `<div class="ending-panel"><h2>✨ 尘埃落定 · 见证时代 ✨</h2><p>50道选择题（含10道学术文献深度题）全部通关！<br>最终积分: ${score}/${totalMax}<br>⭐ 获得「尘埃见证者·学术先锋」称号 ⭐</p><div class="rank-list"><h4>🏆 排行榜 (前十)</h4>${getRankingHtml()}</div><button class="restart-btn" id="winRestart">🌾 重启传奇</button></div>`;
+        document.getElementById("winRestart")?.addEventListener("click",()=>location.reload());
+    }
+    function startGameAfterNickname() {
+        if(!playerNickname.trim()) { alert("请输入昵称，成为尘埃见证者"); return; }
+        currentPlayerName = playerNickname;
+        gameActive=true; gameFinished=false;
+        currentLevelIdx=0; lives=6; score=0; updateUI();
+        initLevel(0); renderCurrentQuestion(); updateSceneImage(0);
+        if(bgmAudio && bgmEnabled) bgmAudio.play().catch(e=>console.log);
+    }
+    function showNicknameScreen() {
+        updateSceneImage(0);
+        dynamicDiv.innerHTML = `
+            <div class="nickname-panel">
+                <h2>🎋 尘埃落定 · 学术见证者之名 🎋</h2>
+                <p style="margin:10px 0">50道选择题（含10篇核心文献深度题），通关即入排行榜。</p>
+                <input type="text" id="nicknameInput" class="nickname-input" placeholder="请输入昵称 (2-12字符)" maxlength="12">
+                <div><button id="confirmNicknameBtn" style="background:#9b784a; width:60%;">☁️ 踏入土司官寨 · 开始闯关 ☁️</button></div>
+                <div class="rank-list" style="margin-top:20px;"><h4>🏆 历史见证者排行榜</h4>${getRankingHtml()}</div>
+            </div>
+        `;
+        const confirmBtn = document.getElementById("confirmNicknameBtn");
+        const inputBox = document.getElementById("nicknameInput");
+        confirmBtn?.addEventListener("click", () => { playerNickname = inputBox.value.trim(); if(!playerNickname) alert("请输入昵称"); else startGameAfterNickname(); });
+        inputBox?.addEventListener("keypress", (e) => { if(e.key === "Enter") { playerNickname = inputBox.value.trim(); if(playerNickname) startGameAfterNickname(); else alert("请输入昵称"); } });
+    }
+
+    document.getElementById("bgmToggleBtn")?.addEventListener("click", toggleBgm);
+    document.getElementById("sfxToggleBtn")?.addEventListener("click", toggleSfx);
+    initAudio();
+    document.body.addEventListener("click", ()=>{ if(bgmAudio && bgmEnabled && bgmAudio.paused) bgmAudio.play().catch(e=>{}); }, {once:true});
+    showNicknameScreen();
+</script>
+</body>
+</html>
